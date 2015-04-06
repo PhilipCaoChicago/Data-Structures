@@ -1,0 +1,7 @@
+C:\Users\kris\Documents\Development\DataStructures.Test\obj\Debug\DataStructures.Test.csprojResolveAssemblyReference.cache
+C:\Users\kris\Documents\Development\DataStructures.Test\bin\Debug\DataStructures.Test.dll
+C:\Users\kris\Documents\Development\DataStructures.Test\bin\Debug\DataStructures.Test.pdb
+C:\Users\kris\Documents\Development\DataStructures.Test\bin\Debug\DataStructures.exe
+C:\Users\kris\Documents\Development\DataStructures.Test\bin\Debug\DataStructures.pdb
+C:\Users\kris\Documents\Development\DataStructures.Test\obj\Debug\DataStructures.Test.dll
+C:\Users\kris\Documents\Development\DataStructures.Test\obj\Debug\DataStructures.Test.pdb
