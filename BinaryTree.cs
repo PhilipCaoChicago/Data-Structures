@@ -1,48 +1,106 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data_Structures
+namespace DataStructures
 {
-    class BinaryTree<T>
+    public class BinaryTree<T>
     {
-        public T Value { get; set; }
+        public BinaryTreeNode<T> Root { get; set; }
 
-        public BinaryTree<T> Left { get; set; }
-        public BinaryTree<T> Right { get; set; }
-
-        public BinaryTree(BinaryTree<T> Left, BinaryTree<T> Right, T Value)
+        public BinaryTree()
         {
-            this.Value = Value;
-            this.Left = Left;
-            this.Right = Right;
+            Root = null;
         }
-    }
 
-    static class BinaryTreeExtensions
-    {
-        static BinaryTree<T> FindNodeByValue<T>(this BinaryTree<T> tree, T value)
+        public virtual void Clear()
         {
-            if (tree == null || EqualityComparer<T>.Default.Equals(value, tree.Value))
+            Root = null;
+        }
+
+        public void PreOrderTraversal()
+        {
+            PreOrderTraversal(Root);
+        }
+
+        public void InOrderTraversal()
+        {
+            InOrderTraversal(Root);
+        }
+
+        public void PostOrderTraversal()
+        {
+            PostOrderTraversal(Root);
+        }
+
+        public BinaryTreeNode<T> FindNodeByValue(T value)
+        {
+            return FindNodeByValue(Root, value);
+        }
+
+        public virtual bool Contains(T value)
+        {
+            return FindNodeByValue(value) == null;
+        }
+
+        private void PreOrderTraversal(BinaryTreeNode<T> node)
+        {
+            if (node != null)
             {
-                return tree;
+                Console.WriteLine(node.Value);
+                PreOrderTraversal(node.Left);
+                PreOrderTraversal(node.Right);
+            }
+        }
+
+        private void InOrderTraversal(BinaryTreeNode<T> node)
+        {
+            if (node != null)
+            {
+                InOrderTraversal(node.Left);
+                Console.WriteLine(node.Value);
+                InOrderTraversal(node.Right);
+            }
+        }
+
+        private void PostOrderTraversal(BinaryTreeNode<T> node)
+        {
+            if (node != null)
+            {
+                PostOrderTraversal(node.Left);
+                PostOrderTraversal(node.Right);
+                Console.WriteLine(node.Value);
+            }
+        }
+
+        private BinaryTreeNode<T> FindNodeByValue(BinaryTreeNode<T> node, T value)
+        {
+            if (node == null || EqualityComparer<T>.Default.Equals(value, node.Value))
+            {
+                return node;
             }
             else
             {
-                return FindNodeByValue(tree.Left, value) ?? FindNodeByValue(tree.Right, value);
+                return FindNodeByValue(node.Left, value) ?? FindNodeByValue(node.Right, value);
             }
         }
+    }
 
-        static void PrintTree<T>(this BinaryTree<T> tree)
-        {
-            if (tree != null)
-            {
-                Console.WriteLine(tree.Value);
-                PrintTree(tree.Left);
-                PrintTree(tree.Right);
-            }
-        }
+    public static class BinaryTreeExtensions
+    {
+        //static BinaryTree<T> FindNodeByValue<T>(this BinaryTree<T> tree, T value)
+        //{
+        //    if (tree == null || EqualityComparer<T>.Default.Equals(value, tree.Value))
+        //    {
+        //        return tree;
+        //    }
+        //    else
+        //    {
+        //        return FindNodeByValue(tree.Left, value) ?? FindNodeByValue(tree.Right, value);
+        //    }
+        //}
     }
 }
