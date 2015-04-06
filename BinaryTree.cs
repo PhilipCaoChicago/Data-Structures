@@ -7,41 +7,31 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class BinaryTree<T>
+    public class BinaryTree<T> : BinaryTreeNode<T>
     {
-        public BinaryTreeNode<T> Root { get; set; }
-
-        public BinaryTree()
-        {
-            Root = null;
-        }
-
-        public virtual void Clear()
-        {
-            Root = null;
-        }
+        public BinaryTree() : base(){}
 
         public void PreOrderTraversal()
         {
-            PreOrderTraversal(Root);
+            PreOrderTraversal(this);
         }
 
         public void InOrderTraversal()
         {
-            InOrderTraversal(Root);
+            InOrderTraversal(this);
         }
 
         public void PostOrderTraversal()
         {
-            PostOrderTraversal(Root);
+            PostOrderTraversal(this);
         }
 
         public BinaryTreeNode<T> FindNodeByValue(T value)
         {
-            return FindNodeByValue(Root, value);
+            return FindNodeByValue(this, value);
         }
 
-        public virtual bool Contains(T value)
+        public bool Contains(T value)
         {
             return FindNodeByValue(value) == null;
         }
@@ -66,7 +56,7 @@ namespace DataStructures
             }
         }
 
-        private void PostOrderTraversal(BinaryTreeNode<T> node)
+        public void PostOrderTraversal(BinaryTreeNode<T> node)
         {
             if (node != null)
             {
@@ -87,20 +77,5 @@ namespace DataStructures
                 return FindNodeByValue(node.Left, value) ?? FindNodeByValue(node.Right, value);
             }
         }
-    }
-
-    public static class BinaryTreeExtensions
-    {
-        //static BinaryTree<T> FindNodeByValue<T>(this BinaryTree<T> tree, T value)
-        //{
-        //    if (tree == null || EqualityComparer<T>.Default.Equals(value, tree.Value))
-        //    {
-        //        return tree;
-        //    }
-        //    else
-        //    {
-        //        return FindNodeByValue(tree.Left, value) ?? FindNodeByValue(tree.Right, value);
-        //    }
-        //}
     }
 }
