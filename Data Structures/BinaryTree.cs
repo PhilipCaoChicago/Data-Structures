@@ -31,7 +31,7 @@ namespace DataStructures
             return FindNodeByValue(this, value);
         }
 
-        public bool Contains(T value)
+        public virtual bool Contains(T value)
         {
             return FindNodeByValue(value) == null;
         }

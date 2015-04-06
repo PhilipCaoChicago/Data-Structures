@@ -12,7 +12,7 @@ namespace DataStructures
 
         public BinarySearchTree() : base() { }
 
-        public bool Contains(T value)
+        public override bool Contains(T value)
         {
             BinaryTreeNode<T> current = this;
             int result;

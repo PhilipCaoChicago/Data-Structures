@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "DataStructures.csproj", "{26F7CF19-DAE1-416A-AB81-2247F3D59DB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "Data Structures\DataStructures.csproj", "{26F7CF19-DAE1-416A-AB81-2247F3D59DB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures.Test", "..\DataStructures.Test\DataStructures.Test.csproj", "{07EA49EE-BA96-42BC-A52F-79F98E3DC3A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures.Test", "DataStructures.Test\DataStructures.Test.csproj", "{07EA49EE-BA96-42BC-A52F-79F98E3DC3A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
