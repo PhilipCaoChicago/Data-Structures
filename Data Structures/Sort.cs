@@ -16,12 +16,8 @@ namespace DataStructures
                 return collection;
             }
 
-            //var left = collection.Where((e, i) => i <= collection.Count() / 2).MergeSort();
-            //var right = collection.Where((e, i) => i > collection.Count() / 2).MergeSort();
-            var left = collection.Where((e, i) => i < collection.Count() / 2).ToList();
-            left = left.MergeSort().ToList();
-            var right = collection.Where((e, i) => i >= collection.Count() / 2).ToList();
-            right = right.MergeSort().ToList();
+            var left = collection.Where((e, i) => i < collection.Count() / 2).MergeSort();
+            var right = collection.Where((e, i) => i >= collection.Count() / 2).MergeSort();
             return Merge(left, right);
         }
 
