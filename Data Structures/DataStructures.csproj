@@ -59,6 +59,12 @@
     <Compile Include="BinarySearchTree.cs" />
     <Compile Include="BinaryTree.cs" />
     <Compile Include="BinaryTreeNode.cs" />
+    <Compile Include="Graph.cs" />
+    <Compile Include="GraphNode.cs" />
+    <Compile Include="Heap.cs" />
+    <Compile Include="LinkedListNode.cs" />
+    <Compile Include="HashTable.cs" />
+    <Compile Include="LinkedList.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeList.cs" />
     <Compile Include="Program.cs" />

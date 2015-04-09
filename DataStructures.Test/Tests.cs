@@ -18,7 +18,8 @@ namespace DataStructures.Test
         [TestMethod]
         public void MergeSortTest()
         {
-            Assert.IsTrue(Enumerable.Range(1, 100).Shuffle().MergeSort().SequenceEqual(Enumerable.Range(1, 100)));
+            var shuffled = Enumerable.Range(1, 100).Shuffle().ToList();
+            Assert.IsTrue(shuffled.MergeSort().SequenceEqual(Enumerable.Range(1, 100)));
             Assert.IsTrue(Enumerable.SequenceEqual(Enumerable.Range(1, 1).Shuffle().MergeSort(), Enumerable.Range(1, 1)));
             Assert.IsTrue(Enumerable.SequenceEqual(Enumerable.Empty<int>().MergeSort(), Enumerable.Empty<int>()));
         }

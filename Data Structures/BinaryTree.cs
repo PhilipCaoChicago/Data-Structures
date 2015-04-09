@@ -7,28 +7,30 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class BinaryTree<T> : BinaryTreeNode<T>
+    public class BinaryTree<T> where T : IComparable<T>
     {
+        protected BinaryTreeNode<T> Root { get; set; }
+
         public BinaryTree() : base(){}
 
         public void PreOrderTraversal()
         {
-            PreOrderTraversal(this);
+            PreOrderTraversal(this.Root);
         }
 
         public void InOrderTraversal()
         {
-            InOrderTraversal(this);
+            InOrderTraversal(this.Root);
         }
 
         public void PostOrderTraversal()
         {
-            PostOrderTraversal(this);
+            PostOrderTraversal(this.Root);
         }
 
         public BinaryTreeNode<T> FindNodeByValue(T value)
         {
-            return FindNodeByValue(this, value);
+            return FindNodeByValue(this.Root, value);
         }
 
         public virtual bool Contains(T value)

@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class BinarySearchTree<T> : BinaryTree<T>
+    public class BinarySearchTree<T> : BinaryTree<T> where T : IComparable<T>
     {
-        private IComparer<T> comparer { get; set; }
-
         public BinarySearchTree() : base() { }
 
         public override bool Contains(T value)
         {
-            BinaryTreeNode<T> current = this;
+            BinaryTreeNode<T> current = this.Root;
             int result;
 
             while (current != null)
             {
-                result = comparer.Compare(value, current.Value);
+                result = value.CompareTo(current.Value);
 
                 if (result == 0)
                     return true;
@@ -37,12 +35,12 @@ namespace DataStructures
             BinaryTreeNode<T> newNode = new BinaryTreeNode<T>(value);
             int result;
 
-            BinaryTreeNode<T> current = this;
+            BinaryTreeNode<T> current = this.Root;
             BinaryTreeNode<T> parent = null;
 
             while (current != null)
             {
-                result = comparer.Compare(value, current.Value);
+                result = value.CompareTo(current.Value);
 
                 if (result == 0)
                 {
@@ -62,11 +60,11 @@ namespace DataStructures
 
             if (parent == null)
             {
-                this.Value = value;
+                this.Root = newNode;
             }
             else
             {
-                result = comparer.Compare(value, parent.Value);
+                result = value.CompareTo(parent.Value);
                 if (result < 0)
                 {
                     parent.Left = newNode;
@@ -80,10 +78,10 @@ namespace DataStructures
 
         public void Remove(T value)
         {
-            BinaryTreeNode<T> current = this;
+            BinaryTreeNode<T> current = this.Root;
             BinaryTreeNode<T> parent = null;
 
-            int result = comparer.Compare(value, current.Value);
+            int result = value.CompareTo(current.Value);
 
             while (result != 0)
             {
@@ -104,7 +102,7 @@ namespace DataStructures
                 }
                 else
                 {
-                    result = comparer.Compare(value, current.Value);
+                    result = value.CompareTo(current.Value);
                 }
             }
 
@@ -112,13 +110,11 @@ namespace DataStructures
             {
                 if (parent == null)
                 {
-                    this.Value = current.Left.Value;
-                    this.Left = current.Left.Left;
-                    this.Right = current.Left.Right;
+                    this.Root = current.Left;
                 }
                 else
                 {
-                    result = comparer.Compare(parent.Value, current.Value);
+                    result = parent.Value.CompareTo(current.Value);
 
                     if (result > 0)
                     {
@@ -136,13 +132,11 @@ namespace DataStructures
 
                 if (parent == null)
                 {
-                    this.Value = current.Right.Value;
-                    this.Left = current.Right.Left;
-                    this.Right = current.Right.Right;
+                    this.Root = current.Right;
                 }
                 else
                 {
-                    result = comparer.Compare(parent.Value, current.Value);
+                    result = parent.Value.CompareTo(current.Value);
 
                     if (result > 0)
                     {
@@ -171,13 +165,13 @@ namespace DataStructures
 
                 if (parent == null)
                 {
-                    this.Value = leftmost.Value;
-                    this.Left = leftmost.Left;
-                    this.Right = leftmost.Right;
+                    this.Root.Value = leftmost.Value;
+                    this.Root.Left = leftmost.Left;
+                    this.Root.Right = leftmost.Right;
                 }
                 else
                 {
-                    result = comparer.Compare(parent.Value, current.Value);
+                    result = parent.Value.CompareTo(current.Value);
 
                     if (result > 0)
                     {
@@ -193,40 +187,38 @@ namespace DataStructures
 
         public void Clear()
         {
-            this.Left = null;
-            this.Right = null;
-            this.Value = default(T);
+            this.Root = null;
         }
 
         public int Count()
         {
-            return Count(this);
+            return Count(this.Root);
         }
 
         public IEnumerable<T> PreOrder()
         {
-            return PreOrder(this);
+            return PreOrder(this.Root);
         }
 
         public IEnumerable<T> InOrder()
         {
-            return InOrder(this);
+            return InOrder(this.Root);
         }
 
         public IEnumerable<T> PostOrder()
         {
-            return PostOrder(this);
+            return PostOrder(this.Root);
         }
 
         private int Count(BinaryTreeNode<T> node, int count = 0)
         {
             if (node != null)
             {
-                return 1 + Count(Left, count) + Count(Right, count);
+                return 1 + Count(node.Left, count) + Count(node.Right, count);
             }
             else
             {
-                return Count(Left, count) + Count(Right, count);
+                return count;
             }
         }
 

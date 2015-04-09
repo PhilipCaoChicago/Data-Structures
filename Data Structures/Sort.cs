@@ -11,13 +11,14 @@ namespace DataStructures
     {
         public static IEnumerable<T> MergeSort<T>(this IEnumerable<T> collection) where T : IComparable<T>
         {
-            if (collection.Count() <= 1)
+            int count = collection.Count();
+            if (count <= 1)
             {
                 return collection;
             }
 
-            var left = collection.Where((e, i) => i < collection.Count() / 2).MergeSort();
-            var right = collection.Where((e, i) => i >= collection.Count() / 2).MergeSort();
+            var left = collection.Where((e, i) => i < count / 2).MergeSort();
+            var right = collection.Where((e, i) => i >= count / 2).MergeSort();
             return Merge(left, right);
         }
 
