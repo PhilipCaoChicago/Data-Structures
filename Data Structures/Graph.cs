@@ -82,6 +82,75 @@ namespace DataStructures
             return true;
         }
 
+        public void BreadthFirstSearch(GraphNode<T> node)
+        {
+            Queue<GraphNode<T>> queue = new Queue<GraphNode<T>>();
+            HashSet<GraphNode<T>> visited = new HashSet<GraphNode<T>>();
+
+            queue.Enqueue(node);
+            visited.Add(node);
+
+            while (queue.Count > 0)
+            {
+                GraphNode<T> newNode = queue.Dequeue();
+
+                foreach (GraphNode<T> neighbor in newNode.Neighbors)
+                {
+                    if (!visited.Contains(neighbor))
+                    {
+                        queue.Enqueue(neighbor);
+                        visited.Add(neighbor);
+                    }
+                }
+            }
+        }
+
+        public void DepthFirstSearch(GraphNode<T> node, bool useRecursion = true)
+        {
+            if (useRecursion)
+            {
+                DepthFirstSearchRecursive(this, node, new HashSet<GraphNode<T>>());
+            }
+            else
+            {
+                DepthFirstSearchNonRecursive(this, node, new HashSet<GraphNode<T>>());
+            }
+        }
+
+        private void DepthFirstSearchRecursive(Graph<T> graph, GraphNode<T> node, HashSet<GraphNode<T>> visited)
+        {
+            visited.Add(node);
+
+            foreach (GraphNode<T> neighbor in node.Neighbors)
+            {
+                if (!visited.Contains(neighbor))
+                {
+                    DepthFirstSearchRecursive(graph, neighbor, visited);
+                }
+            }
+        }
+
+        private void DepthFirstSearchNonRecursive(Graph<T> graph, GraphNode<T> node, HashSet<GraphNode<T>> visited)
+        {
+            Stack<GraphNode<T>> stack = new Stack<GraphNode<T>>();
+            stack.Push(node);
+
+            while(stack.Count > 0)
+            {
+                GraphNode<T> newNode = stack.Pop();
+
+                if (!visited.Contains(newNode))
+                {
+                    visited.Add(newNode);
+
+                    foreach (GraphNode<T> neighbor in newNode.Neighbors)
+                    {
+                        stack.Push(neighbor);
+                    }
+                }
+            }
+        }
+
         public GraphNode<T> FindByValue(T value)
         {
             if (this.NodeSet == null)
@@ -90,11 +159,11 @@ namespace DataStructures
             }
             else
             {
-                return FindByValue(value, (GraphNode<T>)this.NodeSet.First(), new List<GraphNode<T>>());
+                return FindByValue(value, (GraphNode<T>)this.NodeSet.First(), new HashSet<GraphNode<T>>());
             }
         }
 
-        private GraphNode<T> FindByValue(T value, GraphNode<T> node, List<GraphNode<T>> visited)
+        private GraphNode<T> FindByValue(T value, GraphNode<T> node, HashSet<GraphNode<T>> visited)
         {
             if (EqualityComparer<T>.Default.Equals(value, node.Value))
             {
