@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Samples
     {
         private char[,] Board { get; set; }
         private Dictionary<Tuple<int, int>, GraphNode<char>> Translation { get; set; }
+        public Trie<char> Words { get; set; }
 
         public BoggleSolver() : this(5) { }
 
@@ -26,6 +28,14 @@ namespace Samples
                 {
                     this.Board[i, j] = (char)r.Next(65, 91);
                 }
+            }
+
+            var wordArray = File.ReadAllLines("words.txt");
+            this.Words = new Trie<char>();
+
+            foreach(string word in wordArray)
+            {
+                this.Words.Add(word);
             }
         }
 
@@ -53,50 +63,50 @@ namespace Samples
             return new List<string>();
         }
 
-        private List<string> FindWords(Graph<char> g, GraphNode<char> node)
-        {
-            Queue<GraphNode<char>> queue = new Queue<GraphNode<char>>();
-            HashSet<GraphNode<char>> visited = new HashSet<GraphNode<char>>();
-            List<char> chars = new List<char> { node.Value };
-            List<string> words = new List<string>();
+        //private List<string> FindWords(Graph<char> g, GraphNode<char> node)
+        //{
+        //    Queue<GraphNode<char>> queue = new Queue<GraphNode<char>>();
+        //    HashSet<GraphNode<char>> visited = new HashSet<GraphNode<char>>();
+        //    List<char> chars = new List<char> { node.Value };
+        //    List<string> words = new List<string>();
 
-            queue.Enqueue(node);
-            visited.Add(node);
+        //    queue.Enqueue(node);
+        //    visited.Add(node);
 
-            while (queue.Count > 0)
-            {
-                GraphNode<char> newNode = queue.Dequeue();
-                List<char> testChars = new List<char>(chars);
-                testChars.Add(newNode.Value);
+        //    while (queue.Count > 0)
+        //    {
+        //        GraphNode<char> newNode = queue.Dequeue();
+        //        List<char> testChars = new List<char>(chars);
+        //        testChars.Add(newNode.Value);
 
-                foreach (GraphNode<char> neighbor in newNode.Neighbors)
-                {
-                    if (!visited.Contains(neighbor))
-                    {
-                        queue.Enqueue(neighbor);
-                        visited.Add(neighbor);
-                    }
-                }
-            }
-        }
+        //        foreach (GraphNode<char> neighbor in newNode.Neighbors)
+        //        {
+        //            if (!visited.Contains(neighbor))
+        //            {
+        //                queue.Enqueue(neighbor);
+        //                visited.Add(neighbor);
+        //            }
+        //        }
+        //    }
+        //}
 
-        private IEnumerable<List<GraphNode<char>>> FindSubstrings(GraphNode<char> node, List<GraphNode<char>> current)
-        {
-            if (node == null)
-            {
-                yield return new List<GraphNode<char>>();
-            }
-            else
-            {
-                foreach (GraphNode<char> neighbor in node.Neighbors)
-                {
-                    foreach(List<GraphNode<char>> next in FindSubstrings(neighbor, current))
-                    {
-                        yield return current.Concat(new List<GraphNode<char>> { neighbor.Value }).Concat(next).ToList();
-                    }
-                }
-            }
-        }
+        //private IEnumerable<List<GraphNode<char>>> FindSubstrings(GraphNode<char> node, List<GraphNode<char>> current)
+        //{
+        //    if (node == null)
+        //    {
+        //        yield return new List<GraphNode<char>>();
+        //    }
+        //    else
+        //    {
+        //        foreach (GraphNode<char> neighbor in node.Neighbors)
+        //        {
+        //            foreach(List<GraphNode<char>> next in FindSubstrings(neighbor, current))
+        //            {
+        //                yield return current.Concat(new List<GraphNode<char>> { neighbor.Value }).Concat(next).ToList();
+        //            }
+        //        }
+        //    }
+        //}
 
         private Graph<char> CopyToGraph()
         {

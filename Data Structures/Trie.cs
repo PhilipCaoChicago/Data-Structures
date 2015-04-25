@@ -30,49 +30,7 @@ namespace DataStructures
             this.Add(value, this.Root);
         }
 
-        private bool Contains(IEnumerable<T> value, GraphNode<T> node)
-        {
-            if (value.Count() == 0)
-            {
-                return true;
-            }
-            else
-            {
-                T first = value.First();
-                GraphNode<T> child = (GraphNode<T>)node.Neighbors.FindByValue(first);
-
-
-                if (child == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return this.Contains(value.Skip(1), child);
-                }
-            }
-        }
-
-        private void Add(IEnumerable<T> value, GraphNode<T> node)
-        {
-            if (value.Count() == 0 || value == null)
-            {
-                return;
-            }
-            else
-            {
-                T first = value.First();
-
-                if (node.Neighbors.FindByValue(first) != null)
-                {
-                    node.Neighbors.Add(new GraphNode<T>(first));
-                }
-
-                this.Add(value.Skip(1), (GraphNode<T>)node.Neighbors.FindByValue(first));
-            }
-        }
-
-        private bool Remove(IEnumerable<T> value, GraphNode<T> node, GraphNode<T> parent)
+        public bool Remove(IEnumerable<T> value)
         {
             if (value.Count() == 0 || value == null)
             {
@@ -116,6 +74,48 @@ namespace DataStructures
                 }
 
                 return true;
+            }
+        }
+
+        private bool Contains(IEnumerable<T> value, GraphNode<T> node)
+        {
+            if (value.Count() == 0)
+            {
+                return true;
+            }
+            else
+            {
+                T first = value.First();
+                GraphNode<T> child = (GraphNode<T>)node.Neighbors.FindByValue(first);
+
+
+                if (child == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return this.Contains(value.Skip(1), child);
+                }
+            }
+        }
+
+        private void Add(IEnumerable<T> value, GraphNode<T> node)
+        {
+            if (value.Count() == 0 || value == null)
+            {
+                return;
+            }
+            else
+            {
+                T first = value.First();
+
+                if (node.Neighbors.FindByValue(first) == null)
+                {
+                    node.Neighbors.Add(new GraphNode<T>(first));
+                }
+
+                this.Add(value.Skip(1), (GraphNode<T>)node.Neighbors.FindByValue(first));
             }
         }
     }

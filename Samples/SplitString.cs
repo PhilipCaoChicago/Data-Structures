@@ -14,7 +14,7 @@ namespace Samples
 
         public SplitString()
         {
-            var wordArray = File.ReadAllLines(@"C:\Temp\words.txt");
+            var wordArray = File.ReadAllLines("words.txt");
             words = new List<string>(wordArray);
             frequencies = new Dictionary<string, int>();
 
