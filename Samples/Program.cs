@@ -10,11 +10,11 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            SplitString ss = new SplitString();
-            //string output = ss.SplitStringWithoutSpaces2("itwasadarkandstormynight");
+            //SplitString ss = new SplitString();
+            //string output = ss.SplitStringWithoutSpaces2("ilikecheese");
             //Console.WriteLine(output);
-            var partitions = new List<List<string>>();
-            ss.PartitionString("ilikecheese", partitions);
+            //var partitions = new List<List<string>>();
+            //ss.PartitionString("ilikecheese");
             //foreach (var p in partitions)
             //{
             //    foreach (var e in p)
@@ -24,6 +24,9 @@ namespace Samples
             //    }
             //    Console.WriteLine();
             //}
+            BoggleSolver bs = new BoggleSolver();
+            bs.PrintBoard();
+            bs.FindAllWords();
         }
     }
 }

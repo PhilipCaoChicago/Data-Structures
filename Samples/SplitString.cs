@@ -40,60 +40,31 @@ namespace Samples
             return null;
         }
 
-        //public string SplitStringWithoutSpaces2(string input)
-        //{
-        //    var partitions = PartitionString(input, new List<string>()).ToList();
-        //    return String.Join(" ", partitions
-        //                           .Where(p => p.All(w => words.Contains(w)))
-        //                           .Select(p => new { P = p, C = p.Select(w => frequencies[w]).Sum()})
-        //                           .OrderBy(o => o.C)
-        //                           .First()
-        //                           .P);
-        //}
+        public string SplitStringWithoutSpaces2(string input)
+        {
+            var partitions = PartitionString(input).ToList();
+            return String.Join(" ", partitions
+                                   .Where(p => p.All(w => words.Contains(w)))
+                                   .Select(p => new { P = p, C = p.Select(w => frequencies[w]).Sum() })
+                                   .OrderBy(o => o.C)
+                                   .First()
+                                   .P);
+        }
 
-        public void PartitionString(string input, List<List<string>> partitions)
+        public IEnumerable<List<string>> PartitionString(string input)
         {
             if (input == "")
             {
-                //yield return new List<string>();
-                //partitions.Add(partition);
+                yield return new List<string>();
             }
             else
             {
-                for (int i = 0; i < input.Length; i++)
+                for (int i = 1; i <= input.Length; i++)
                 {
-                    List<string> partition = new List<string>();
-                    if (words.Contains(input.Substring(0, i)))
+                    foreach (List<string> tail in PartitionString(input.Substring(i)))
                     {
-                        partition.Add(input.Substring(0, i));
-                        //int k = i;
-                        //for (int j = 0; j <= input.Length - i; j++, k++)
-                        //{
-                        //    if (words.Contains(input.Substring(k, j)))
-                        //    {
-                        //        partition.Add(input.Substring(k, j));
-                        //        k += j;
-                        //        j = 0;
-                        //    }
-                        //}
+                        yield return (new List<string> { input.Substring(0, i) }).Concat(tail).ToList();
                     }
-
-                    if (String.Join("", partition) == input)
-                    {
-                        partitions.Add(partition);
-                    }
-
-                    //foreach (List<string> tail in PartitionString(input.Substring(i), partition))
-                    //{
-                    //    if (words.Contains(input.Substring(0, i)))
-                    //    {
-                    //        yield return (new List<string> { input.Substring(0, i) }).Concat(tail).ToList();
-                    //    }
-                    //    else
-                    //    {
-                    //        yield return new List<string>();
-                    //    }
-                    //}
                 }
             }
         }

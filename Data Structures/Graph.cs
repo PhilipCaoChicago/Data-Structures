@@ -38,14 +38,14 @@ namespace DataStructures
             NodeSet.Add(new GraphNode<T>(value));
         }
 
-        public void AddDirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost)
+        public void AddDirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost = 0)
         {
             AddNode(from);
             AddNode(to);
             from.Neighbors.Add(to);
         }
 
-        public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost)
+        public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost = 0)
         {
             AddDirectedEdge(from, to, cost);
             AddDirectedEdge(to, from, cost);
