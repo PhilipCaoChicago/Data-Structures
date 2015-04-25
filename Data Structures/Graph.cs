@@ -43,7 +43,6 @@ namespace DataStructures
             AddNode(from);
             AddNode(to);
             from.Neighbors.Add(to);
-            from.Costs.Add(cost);
         }
 
         public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost)
@@ -75,7 +74,6 @@ namespace DataStructures
                 if(index != 1)
                 {
                     node.Neighbors.RemoveAt(index);
-                    node.Costs.RemoveAt(index);
                 }
             }
 

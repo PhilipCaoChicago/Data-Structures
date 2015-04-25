@@ -8,8 +8,6 @@ namespace DataStructures
 {
     public class GraphNode<T> : Node<T>
     {
-        private List<int> costs;
-
         public GraphNode() : base() { }
         public GraphNode(T value) : base(value) { }
         public GraphNode(T value, NodeList<T> neighbors) : base(value, neighbors) { }
@@ -25,11 +23,6 @@ namespace DataStructures
 
                 return base.Neighbors;
             }
-        }
-
-        public List<int> Costs
-        {
-            get { return this.costs ?? (this.costs = new List<int>()); }
         }
     }
 }
