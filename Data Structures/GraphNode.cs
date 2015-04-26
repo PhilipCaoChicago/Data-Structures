@@ -8,10 +8,6 @@ namespace DataStructures
 {
     public class GraphNode<T> : Node<T>
     {
-        public GraphNode() : base() { }
-        public GraphNode(T value) : base(value) { }
-        public GraphNode(T value, NodeList<T> neighbors) : base(value, neighbors) { }
-
         new public NodeList<T> Neighbors
         {
             get
@@ -24,5 +20,9 @@ namespace DataStructures
                 return base.Neighbors;
             }
         }
+
+        public GraphNode() : base() { }
+        public GraphNode(T value) : base(value) { }
+        public GraphNode(T value, NodeList<T> neighbors) : base(value, neighbors) { }
     }
 }

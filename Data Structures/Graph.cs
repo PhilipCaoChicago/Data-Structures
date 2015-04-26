@@ -8,7 +8,7 @@ namespace DataStructures
 {
     public class Graph<T>
     {
-        private NodeList<T> NodeSet { get; set; }
+        public NodeList<T> NodeSet { get; private set; }
 
         public Graph() : this(null) { }
         public Graph(NodeList<T> nodeSet)

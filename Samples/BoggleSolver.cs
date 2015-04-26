@@ -13,6 +13,7 @@ namespace Samples
         private char[,] Board { get; set; }
         private Dictionary<Tuple<int, int>, GraphNode<char>> Translation { get; set; }
         public Trie<char> Words { get; set; }
+        public HashSet<string> WordSet { get; set; }
 
         public BoggleSolver() : this(5) { }
 
@@ -32,10 +33,12 @@ namespace Samples
 
             var wordArray = File.ReadAllLines("words.txt");
             this.Words = new Trie<char>();
+            this.WordSet = new HashSet<string>();
 
             foreach(string word in wordArray)
             {
-                this.Words.Add(word);
+                this.Words.Add(word.ToUpper());
+                this.WordSet.Add(word.ToUpper());
             }
         }
 
@@ -60,53 +63,36 @@ namespace Samples
         public List<string> FindAllWords()
         {
             Graph<char> g = this.CopyToGraph();
-            return new List<string>();
+            IEnumerable<string> results = Enumerable.Empty<string>();
+
+            foreach (GraphNode<char> node in g.NodeSet)
+            {
+                IEnumerable<string> words = this.FindWords(node, new List<GraphNode<char>> { node }).ToList();
+                results = results.Concat(words);
+            }
+
+            return results.Intersect(this.WordSet).ToList();
         }
 
-        //private List<string> FindWords(Graph<char> g, GraphNode<char> node)
-        //{
-        //    Queue<GraphNode<char>> queue = new Queue<GraphNode<char>>();
-        //    HashSet<GraphNode<char>> visited = new HashSet<GraphNode<char>>();
-        //    List<char> chars = new List<char> { node.Value };
-        //    List<string> words = new List<string>();
+        private IEnumerable<string> FindWords(GraphNode<char> node, List<GraphNode<char>> path)
+        {
+            foreach (GraphNode<char> neighbor in node.Neighbors)
+            {
+                if (!path.Contains(neighbor))
+                {
+                    List<GraphNode<char>> testPath = path.Concat(new List<GraphNode<char>> { neighbor }).ToList();
+                    char[] testChars = testPath.Select(n => n.Value).ToArray();
 
-        //    queue.Enqueue(node);
-        //    visited.Add(node);
-
-        //    while (queue.Count > 0)
-        //    {
-        //        GraphNode<char> newNode = queue.Dequeue();
-        //        List<char> testChars = new List<char>(chars);
-        //        testChars.Add(newNode.Value);
-
-        //        foreach (GraphNode<char> neighbor in newNode.Neighbors)
-        //        {
-        //            if (!visited.Contains(neighbor))
-        //            {
-        //                queue.Enqueue(neighbor);
-        //                visited.Add(neighbor);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private IEnumerable<List<GraphNode<char>>> FindSubstrings(GraphNode<char> node, List<GraphNode<char>> current)
-        //{
-        //    if (node == null)
-        //    {
-        //        yield return new List<GraphNode<char>>();
-        //    }
-        //    else
-        //    {
-        //        foreach (GraphNode<char> neighbor in node.Neighbors)
-        //        {
-        //            foreach(List<GraphNode<char>> next in FindSubstrings(neighbor, current))
-        //            {
-        //                yield return current.Concat(new List<GraphNode<char>> { neighbor.Value }).Concat(next).ToList();
-        //            }
-        //        }
-        //    }
-        //}
+                    if (this.Words.Contains(testChars))
+                    {
+                        foreach (string word in (new[] { new String(testChars) }).Concat(this.FindWords(neighbor, testPath)))
+                        {
+                            yield return word;
+                        }
+                    }
+                }
+            }
+        }
 
         private Graph<char> CopyToGraph()
         {
@@ -134,7 +120,7 @@ namespace Samples
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i - 1, j)]);
                     }
-                    if (i > 0 && j < this.Board.GetLength(1) - 2)
+                    if (i > 0 && j < this.Board.GetLength(1) - 1)
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i - 1, j + 1)]);
                     }
@@ -142,19 +128,19 @@ namespace Samples
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i, j - 1)]);
                     }
-                    if (j < this.Board.GetLength(1) - 2)
+                    if (j < this.Board.GetLength(1) - 1)
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i, j + 1)]);
                     }
-                    if (i < this.Board.GetLength(0) - 2 && j > 0)
+                    if (i < this.Board.GetLength(0) - 1 && j > 0)
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i + 1, j - 1)]);
                     }
-                    if (i < this.Board.GetLength(0) - 2)
+                    if (i < this.Board.GetLength(0) - 1)
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i + 1, j)]);
                     }
-                    if (i < this.Board.GetLength(0) - 2 && j < this.Board.GetLength(1) - 2)
+                    if (i < this.Board.GetLength(0) - 1 && j < this.Board.GetLength(1) - 1)
                     {
                         g.AddDirectedEdge(Translation[Tuple.Create(i, j)], Translation[Tuple.Create(i + 1, j + 1)]);
                     }
