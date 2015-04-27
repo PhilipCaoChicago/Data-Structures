@@ -38,17 +38,17 @@ namespace DataStructures
             NodeSet.Add(new GraphNode<T>(value));
         }
 
-        public void AddDirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost = 0)
+        public void AddDirectedEdge(GraphNode<T> from, GraphNode<T> to)
         {
             AddNode(from);
             AddNode(to);
             from.Neighbors.Add(to);
         }
 
-        public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to, int cost = 0)
+        public void AddUndirectedEdge(GraphNode<T> from, GraphNode<T> to)
         {
-            AddDirectedEdge(from, to, cost);
-            AddDirectedEdge(to, from, cost);
+            AddDirectedEdge(from, to);
+            AddDirectedEdge(to, from);
         }
 
         public bool Contains(T value)
@@ -181,6 +181,53 @@ namespace DataStructures
 
                 return null;
             }
+        }
+
+        public IEnumerable<GraphNode<T>> FindShortestPath(GraphNode<T> source, GraphNode<T> target)
+        {
+            Dictionary<GraphNode<T>, int> distances = new Dictionary<GraphNode<T>, int>();
+            Dictionary<GraphNode<T>, GraphNode<T>> previousNodes = new Dictionary<GraphNode<T>, GraphNode<T>>();
+            List<GraphNode<T>> nodeList = new List<GraphNode<T>>();
+
+            distances[source] = 0;
+            previousNodes[source] = null;
+
+            foreach (GraphNode<T> node in this.NodeSet)
+            {
+                if (node != source)
+                {
+                    distances[node] = Int32.MaxValue;
+                    previousNodes[node] = null;
+                }
+
+                nodeList.Add(node);
+            }
+
+            while (nodeList.Count > 0)
+            {
+                GraphNode<T> node = nodeList.Select(n => new { Node = n, Distance = distances[n] }).OrderBy(n => n.Distance).First().Node;
+                nodeList.Remove(node);
+
+                foreach (GraphNode<T> neighbor in node.Neighbors)
+                {
+                    int alternate = distances[node] + 1;
+
+                    if (alternate < distances[neighbor])
+                    {
+                        distances[neighbor] = alternate;
+                        previousNodes[neighbor] = node;
+                    }
+                }
+            }
+
+            GraphNode<T> current = target;
+
+            do
+            {
+                yield return previousNodes[current];
+                current = previousNodes[current];
+            }
+            while (current != source);
         }
     }
 }
